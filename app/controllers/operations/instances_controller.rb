@@ -59,6 +59,7 @@ class Operations::InstancesController < ApplicationController
         if request.format.json?
           h[rel.fromCiId] = @clouds[rel.toCiId]
         else
+          rel.attributes.delete(:fromCi)   # This is very important not only to reduce the payload size but more importantly to prevent potential cyclic references during json generation in json responder.
           rel.toCi = @clouds[rel.toCiId]
           h[rel.fromCiId] = rel
         end
